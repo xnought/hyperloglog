@@ -1,4 +1,4 @@
-import hashlib
+import mmh3
 
 
 # todo use bit operations for wayyyyyyy faster performance
@@ -13,9 +13,8 @@ def num_leading_zeros(num):
     return count
 
 
-# todo use a better hash function for hyperloglog
 def hasher(item):
-    return int(hashlib.md5(f"{str(item)}".encode()).hexdigest(), 16)
+    return mmh3.hash(str(item), signed=False)
 
 
 def hyperloglog(data):
@@ -49,10 +48,8 @@ def generate_data(cardinality=100, length=1000):
 
 
 def main():
-    data = generate_data(25_000, 100_000_000)
-
-    # print(cardinality_hashmap(data))
-    print(hyperloglog(data))
+    data = generate_data(23_000, 1_000_000)
+    print("estimated cardinality", hyperloglog(data))
 
 
 if __name__ == "__main__":
