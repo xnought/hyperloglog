@@ -11,3 +11,10 @@ estimated_num_elements = hyperloglog(array)
 ```
 
 Check out the [`example.ipynb`](example.ipynb) for a real example on a 100 million elements array with around 10 million unique elements.
+
+## Todo
+
+- [ ] implement in faster language
+- [ ] have more max_leading_zeros than just 1
+- [ ] implement distributed/parallel version
+- [ ] improve hash function
