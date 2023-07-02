@@ -1,16 +1,14 @@
 import mmh3
 
 
-# todo use bit operations for wayyyyyyy faster performance
 def num_leading_zeros(num):
-    str_bin = bin(num)[2:]
-    count = 0
-    for c in reversed(str_bin):
-        if c == "0":
-            count += 1
-        else:
-            break
-    return count
+    bits = num.bit_length()
+    # iterate over each bit from right to left
+    # stop when found a 1
+    for i in range(bits):
+        if num & (1 << i):
+            return i
+    return bits
 
 
 def hasher(item):
@@ -18,12 +16,12 @@ def hasher(item):
 
 
 def hyperloglog(data):
-    max_zeroes = 0
+    max_zeros = 0
     for d in data:
         hash = hasher(d)
-        max_zeroes = max(max_zeroes, num_leading_zeros(hash))
+        max_zeros = max(max_zeros, num_leading_zeros(hash))
 
-    return 2 ** (max_zeroes + 1)
+    return 2 ** (max_zeros + 1)
 
 
 def cardinality_hashmap(data):
