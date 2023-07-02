@@ -2,7 +2,7 @@
 
 HyperLogLog algorithm from scratch. Count the cardinality of an array with with basically no memory usage.
 
-You could get perfect count, but it takes a lot of memory (hashmap).
+You could get perfect count, but it takes a lot of memory (hashmap). Instead, leverage statistics with hyperloglog.
 
 ```python
 from hyperloglog import hyperloglog
