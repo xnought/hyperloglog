@@ -1,4 +1,5 @@
 import mmh3
+from tqdm import tqdm
 
 
 def num_leading_zeros(num):
@@ -15,39 +16,35 @@ def hasher(item):
     return mmh3.hash(str(item), signed=False)
 
 
-def hyperloglog(data):
+def hyperloglog(data, log_progress=False):
     max_zeros = 0
-    for d in data:
+    for d in tqdm(data, total=len(data), disable=not log_progress):
         hash = hasher(d)
         max_zeros = max(max_zeros, num_leading_zeros(hash))
 
     return 2 ** (max_zeros + 1)
 
 
-def cardinality_hashmap(data):
-    map = {}
-    for d in data:
-        if d in map:
-            map[d] += 1
-        else:
-            map[d] = 1
-
-    return len(map)
-
-
 def generate_data(cardinality=100, length=1000):
     import random
 
     data = []
-    for i in range(length):
+    for _ in range(length):
         data.append(random.randint(0, cardinality))
 
     return data
 
 
 def main():
-    data = generate_data(23_000, 1_000_000)
-    print("estimated cardinality", hyperloglog(data))
+    length = 100_000_00
+    cardinality = 100_000
+    data = generate_data(cardinality, length)
+    print(
+        "estimated cardinality",
+        hyperloglog(data, log_progress=True),
+        "vs. actual",
+        cardinality,
+    )
 
 
 if __name__ == "__main__":
